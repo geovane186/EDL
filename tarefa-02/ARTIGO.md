@@ -17,7 +17,7 @@
 
 ## Exemplos de código representativos
 
-**Multiplicação Matricial** => prevê a probabilidade da ocorrência de um evento, ajustando os dados a uma função logística.
+**Multiplicação Matricial**
 
 <p> R
    <pre><code>
@@ -48,7 +48,7 @@ def MultiplicaMatrix(m1, m2):
 </pre></code>
  </p> 
  
-**Redução de elementos duplicados em vetores** => É um tipo de algoritmo sem supervisão que resolve problemas de agrupamento.
+**Redução de elementos duplicados em vetores** =>
 
 <p> R
    <pre><code>
