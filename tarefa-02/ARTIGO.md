@@ -26,7 +26,7 @@
 > 
 > M3 = M1 %*% M2
 > 
-> print(M_prod)
+> print(M3)
 </pre></code>
  </p> 
  
@@ -48,7 +48,7 @@ def MultiplicaMatrix(m1, m2):
 </pre></code>
  </p> 
  
-**Redução de elementos duplicados em vetores** =>
+**Redução de elementos duplicados em vetores**
 
 <p> R
    <pre><code>
