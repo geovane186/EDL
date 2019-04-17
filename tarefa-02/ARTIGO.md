@@ -12,61 +12,62 @@
 
 
 ## Avaliação Comparativa
-<p>Vamos comparar R com a linguagem Python que também é utilizada para análise de dados.As duas lingugens possuem facil apredizado, porém R possui uma série de pacotes que aumentam o nivel de funcionalidades da linguagem e o nivel de integração com outras linguagens. Em relação a expressividade, R é mais expressiva que Python.</p>
+<p>Vamos comparar R com a linguagem Python que também é utilizada para análise de dados.As duas lingugens possuem facil apredizado, porém R possui uma série de pacotes que aumentam o nivel de funcionalidades da linguagem e o nivel de integração com outras linguagens. Em relação a expressividade, temos 2 exemplos de comparação entre as linguagens.</p>
+<p>No primeiro temos um exemplo da aplicação do algoritmo K-Means, usado para clusterização, para utiliza-lo é preciso verificar e limpar a existencia de valores não numéricos , em R é testado em cada iteração de coluna, em seguida aplicamos o algoritmo, mas em python os métodos get_numeric_data e dropna são usados para remorer os dados não-numéricos, e em seguida aplicamos o algoritmo.</p>
+<p>No segundo temos um exemplo de calculo de média, onde podemos observar que em R o retorno para colunas onde temos strings ao invés de números é NA (Not Available). Porém em Python é ignorado por default operações de média para grupos de valores não-numéricos, portanto vemos que R é mais formal no tratamento estatístico e retorna a indisponibilidade do cálculo de forma explícita.</p>
 
 
 ## Exemplos de código representativos
 
-**Multiplicação Matricial**
+**K-Means: Algoritmo Clusterização**
 
 <p> R
    <pre><code>
-> M1 = matrix(data = 1:9, nrow = 3, ncol = 3)
-> M2 = matrix(data = 1:9, nrow = 3, ncol = 3)
-> 
-> M3 = M1 %*% M2
-> 
-> print(M3)
+> planilha <- read.csv("planilha.csv")
+> library(cluster)
+> set.seed(1)
+> dadoUtil <- function(col){
+>    sum(is.na(col)) == 0 && is.numeric(col) 
+> }
+> dadosUTeis <- sapply(planilha, dadoUtil)
+> clusters <- kmeans(planilha[,dadosUteis], centers=5)
+> labels <- clusters$cluster
 </pre></code>
  </p> 
  
 <p> Python
 <pre><code>
-def MultiplicaMatrix(m1, m2):
-  ﻿  sizeLA = len(m1)
-    sizeCA = len(m1[0])
-    sizeCB = len(m2[0])
-    m3 = []
-    for i in range(sizeLA):
-        m3.append([])
-        for j in range(sizeCB):
-            val = 0
-            for k in range(sizeCA):
-                    va﻿l += m1[i][k]*matrizB[k][j]
-            m3[i].append(val)
-    return m3﻿  
+import pandas
+
+planilha = pandas.read_csv("planilha.csv")
+
+from sklearn.cluster import KMeans
+
+kmeans_model = KMeans(n_clusters=5, random_state=1)
+
+dadosUTeis = planilha._get_numeric_data().dropna(axis=1)
+
+kmeans_model.fit(dadosUTeis)
+
+labels = kmeans_model.labels_
 </pre></code>
  </p> 
  
-**Redução de elementos duplicados em vetores**
+**Calculo de Média**
 
 <p> R
    <pre><code>
-> vetor<-c(1,2,1,2)
-> vetor<-unique(vetor)
+> planilha <- read.csv("planilha.csv")
+> sapply(planilha, mean, na.rm=TRUE)
 </pre></code>
  </p> 
  
  <p> Python
   <pre><code>
-def RemoveDuplicados(vet):
-    vet2 = []
-    # removendo duplicados
-    for x in vet:
-        if x not in vet2:
-            vet2.append(x)
-			
-    return vet2
+import pandas
+
+planilha = pandas.read_csv("planilha.csv")
+planilha.mean()
 </pre></code>
 </p>
 
@@ -77,3 +78,5 @@ def RemoveDuplicados(vet):
 [Vetores R](https://rpubs.com/paternogbc/47469)
 
 [Linguagem R](https://www.devmedia.com.br/trabalhando-com-a-linguagem-r/33275)
+
+[Comparativo: R vs Python](https://imasters.com.br/back-end/comparativo-r-vs-python-para-data-science)
