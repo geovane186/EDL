@@ -12,62 +12,86 @@
 
 
 ## Avaliação Comparativa
-<p>Vamos comparar R com a linguagem Python que também é utilizada para análise de dados.As duas lingugens possuem facil apredizado, porém R possui uma série de pacotes que aumentam o nivel de funcionalidades da linguagem e o nivel de integração com outras linguagens. Em relação a expressividade, temos 2 exemplos de comparação entre as linguagens.</p>
-<p>No primeiro temos um exemplo da aplicação do algoritmo K-Means, usado para clusterização, para utiliza-lo é preciso verificar e limpar a existencia de valores não numéricos , em R é testado em cada iteração de coluna, em seguida aplicamos o algoritmo, mas em python os métodos get_numeric_data e dropna são usados para remorer os dados não-numéricos, e em seguida aplicamos o algoritmo.</p>
-<p>No segundo temos um exemplo de calculo de média, onde podemos observar que em R o retorno para colunas onde temos strings ao invés de números é NA (Not Available). Porém em Python é ignorado por default operações de média para grupos de valores não-numéricos, portanto vemos que R é mais formal no tratamento estatístico e retorna a indisponibilidade do cálculo de forma explícita.</p>
+<p>Vamos comparar R com a linguagem Python que também é utilizada para análise de dados. As duas lingugens possuem facil apredizado, porém R possui uma série de pacotes que aumentam o nivel de funcionalidades da linguagem e o nivel de integração com outras linguagens. Em relação a expressividade, temos 2 exemplos de comparação entre as linguagens.</p>
+<p>No primeiro exemplo temos em R a funcionalidade de realizar multiplos cálculos simultaneos com vetores, uma vez que, R é uma linguagem baseada em vetores. Você pode pensar em um vetor como uma linha ou coluna de números ou texto. A lista de números {1,2,3,4,5}, por exemplo, poderia ser um vetor. Ao contrário da maioria das outras linguagens de programação, o R permite aplicar funções ao vetor inteiro em uma única operação, sem a necessidade de um loop explícito. Em python seria necessario a escrita de uma função, onde estaria descrito o loop.</p>
+<p>No segundo temos um exemplo de como funciona o for loop em R comparado ao for loop em python, podemos observar a partir dos exemplos, que python é mais rapido que R para um numero de iterações menor que 1000, porém a partir desse valor, R passa a ser superior a Python, devida a sua funcionalidade de realizar loop com valores maiores.</p>
 
 
 ## Exemplos de código representativos
 
-**K-Means: Algoritmo Clusterização**
+**Vetores**
 
 <p> R
    <pre><code>
-> planilha <- read.csv("planilha.csv")
-> library(cluster)
-> set.seed(1)
-> dadoUtil <- function(col){
->    sum(is.na(col)) == 0 && is.numeric(col) 
-> }
-> dadosUTeis <- sapply(planilha, dadoUtil)
-> clusters <- kmeans(planilha[,dadosUteis], centers=5)
-> labels <- clusters$cluster
+> x <- 1:5
+> x + 6:10
+[1] 7 9 11 13 15
+
+> x + 2
+[1] 3 4 5 6 7
 </pre></code>
  </p> 
  
 <p> Python
 <pre><code>
-import pandas
+v = [1,2,3,4,5]
 
-planilha = pandas.read_csv("planilha.csv")
+for x in v:
+	x=x+2
+	print(x)
 
-from sklearn.cluster import KMeans
-
-kmeans_model = KMeans(n_clusters=5, random_state=1)
-
-dadosUTeis = planilha._get_numeric_data().dropna(axis=1)
-
-kmeans_model.fit(dadosUTeis)
-
-labels = kmeans_model.labels_
 </pre></code>
  </p> 
  
-**Calculo de Média**
+**For Loop**
 
 <p> R
    <pre><code>
-> planilha <- read.csv("planilha.csv")
-> sapply(planilha, mean, na.rm=TRUE)
+> library(magrittr)
+> #number of the loop iterations
+> n_elements <- 1e5
+> #probe points
+> x <- c(10,100,1000,5000,10000,25000,50000,75000,100000)
+> #for loop
+> t <- Sys.time()
+> vec <- NULL
+> elapsed <- NULL
+> for (i in seq_len(n_elements))
+> {
+>     vec <- c(vec, sample(i, size = 1, replace = T))
+>     if(i %in% x) 
+>         elapsed <- c(elapsed, as.numeric(difftime(Sys.time(), t, 'secs')))
+> }
+> #lapply function
+> t <- Sys.time()
+> vec <- NULL
+> elapsed_sapply <- lapply(seq_len(n_elements), function(i) {
+>     vec <- c(vec, sample(i, size = 1, replace = T))
+>     if(i %in% x) 
+>         return(as.numeric(difftime(Sys.time(), t, 'secs')))
+> }) %>% Filter(Negate(is.null), .) %>% unlist()
 </pre></code>
  </p> 
  
  <p> Python
   <pre><code>
-import pandas
+from numpy import random as rand
+import datetime as dt
 
-planilha = pandas.read_csv("planilha.csv")
-planilha.mean()
+#number of the loop iterations
+n_elements = int(1e5)
+#probe points
+x = [10,100,1000,5000,10000,25000,50000,75000,100000]
+
+#for loop
+t = dt.datetime.now()
+vec = []
+elapsed = []
+
+for i in range(n_elements):
+    vec.append(rand.choice(i+1, size=1, replace=True))
+    if i+1 in x:
+        elapsed.append((dt.datetime.now() - t).total_seconds())
 </pre></code>
 </p>
 
